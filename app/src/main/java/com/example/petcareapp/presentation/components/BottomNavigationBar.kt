@@ -1,8 +1,13 @@
 package com.example.petcareapp.presentation.components
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Login
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PersonAdd
+import androidx.compose.material.icons.filled.Pets
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -14,11 +19,20 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 data class NavigationItem(val route: String, val label: String, val icon: ImageVector)
 
 @Composable
-fun BottomNavigationBar(navController: NavHostController) {
-    val items = listOf(
-        NavigationItem("login", "Вход", Icons.Default.ExitToApp),
-        NavigationItem("register", "Регистрация", Icons.Default.Person)
-    )
+fun BottomNavigationBar(navController: NavHostController, isLoggedIn: Boolean) {
+    val items = if (isLoggedIn) {
+        listOf(
+            NavigationItem("home", "Питомцы", Icons.Default.Pets),
+            NavigationItem("calendar", "Календарь", Icons.Default.DateRange),
+            NavigationItem("profile", "Профиль", Icons.Default.Person),
+
+        )
+    } else {
+        listOf(
+            NavigationItem("login", "Вход", Icons.Default.Login),
+            NavigationItem("register", "Регистрация", Icons.Default.PersonAdd)
+        )
+    }
 
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
@@ -49,3 +63,4 @@ fun BottomNavigationBar(navController: NavHostController) {
         }
     }
 }
+

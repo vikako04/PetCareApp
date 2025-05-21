@@ -12,6 +12,8 @@ lottie = "6.0.0"
 glance = "1.1.0-beta02"
 runtimeLivedata = "1.7.8"
 navigationComposeAndroid = "2.9.0"
+foundationLayoutAndroid = "1.7.2"
+uiTestAndroid = "1.7.8"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -33,6 +35,8 @@ glance-appwidget = { group = "androidx.glance", name = "glance-appwidget", versi
 glance-material = { group = "androidx.glance", name = "glance-material3", version.ref = "glance" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 androidx-navigation-compose-android = { group = "androidx.navigation", name = "navigation-compose-android", version.ref = "navigationComposeAndroid" }
+androidx-foundation-layout-android = { group = "androidx.compose.foundation", name = "foundation-layout-android", version.ref = "foundationLayoutAndroid" }
+androidx-ui-test-android = { group = "androidx.compose.ui", name = "ui-test-android", version.ref = "uiTestAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

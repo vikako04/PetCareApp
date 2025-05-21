@@ -1,5 +1,4 @@
 package com.example.petcareapp.di
-
 import android.app.Application
 import androidx.room.Room
 import com.example.petcareapp.data.local.database.AppDatabase
@@ -11,7 +10,8 @@ val databaseModule = module {
             get<Application>(),
             AppDatabase::class.java,
             "petcare_db"
-        ).fallbackToDestructiveMigration().build()
+        ).fallbackToDestructiveMigration()
+            .build()
     }
 
     single { get<AppDatabase>().userDao() }
