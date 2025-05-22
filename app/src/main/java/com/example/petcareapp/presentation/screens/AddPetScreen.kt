@@ -38,21 +38,29 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import com.example.petcareapp.domain.model.Pet
+import com.example.petcareapp.presentation.viewmodel.AddPetState
+import com.example.petcareapp.presentation.viewmodel.AddPetViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun AddPetScreen(navController: NavHostController) {
+fun AddPetScreen(navController: NavHostController,
+                 viewModel: AddPetViewModel = koinViewModel()) {
     var name by remember { mutableStateOf("") }
     var age by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var selectedType by remember { mutableStateOf("") }
     var otherType by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
-    var imageUri by remember { mutableStateOf<Uri?>(null) }
+    var avatar by remember { mutableStateOf<Uri?>(null) }
+
+    val state by viewModel.state.collectAsState()
+
 
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
-    ) { uri -> imageUri = uri }
+    ) { uri -> avatar = uri }
 
     val petTypes = listOf(
         "Собака",
@@ -95,11 +103,11 @@ fun AddPetScreen(navController: NavHostController) {
                 .clickable { launcher.launch("image/*") },
             contentAlignment = Alignment.Center
         ) {
-            if (imageUri != null) {
+            if (avatar != null) {
                 Image(
                     painter = rememberAsyncImagePainter(
                         ImageRequest.Builder(context)
-                            .data(imageUri)
+                            .data(avatar)
                             .build()
                     ),
                     contentDescription = "Фото питомца",
@@ -252,9 +260,34 @@ fun AddPetScreen(navController: NavHostController) {
 
         Button(
             onClick = {
-                // TODO: отправка данных на сервер или в ViewModel
-                val finalType = if (selectedType == "Другие") otherType else selectedType
-                // Используй finalType вместе с остальными данными
+                val finalType = if (selectedType == "Другое") otherType else selectedType
+                val petAge = age.toIntOrNull() ?: -1
+
+                if (name.isBlank()) {
+                    // Покажи ошибку: "Имя обязательно"
+                    return@Button
+                }
+
+                if (finalType.isBlank()) {
+                    // Покажи ошибку: "Тип обязателен"
+                    return@Button
+                }
+
+                if (petAge < 0) {
+                    // Покажи ошибку: "Некорректный возраст"
+                    return@Button
+                }
+
+                val avatarPath = avatar.toString()
+                val pet = Pet(
+                    name = name.trim(),
+                    type = finalType,
+                    age = petAge,
+                    description = description.trim(),
+                    avatar = avatarPath
+                )
+
+                viewModel.addPet(pet) // Например, ты можешь реализовать этот метод в своём ViewModel
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -269,5 +302,23 @@ fun AddPetScreen(navController: NavHostController) {
                 color = Color.White
             )
         }
+        when (state) {
+            is AddPetState.Loading -> CircularProgressIndicator()
+            is AddPetState.Success -> {
+                LaunchedEffect(Unit) {
+                    viewModel.resetState()
+                    navController.popBackStack() // Возврат на предыдущий экран после успешного добавления
+                }
+            }
+            is AddPetState.Error -> {
+                Text(
+                    text = (state as AddPetState.Error).message,
+                    color = Color.Red,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+            }
+            else -> {}
+        }
     }
+
 }

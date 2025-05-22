@@ -2,6 +2,7 @@ package com.example.petcareapp.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.petcareapp.data.local.UserPrefs
 import com.example.petcareapp.domain.model.User
 import com.example.petcareapp.domain.usecase.LoginUserUseCase
 import com.example.petcareapp.domain.usecase.RegisterUserUseCase
@@ -18,7 +19,9 @@ sealed class AuthState {
 
 class AuthViewModel(
     private val loginUserUseCase: LoginUserUseCase,
-    private val registerUserUseCase: RegisterUserUseCase
+    private val registerUserUseCase: RegisterUserUseCase,
+    private val userPrefs: UserPrefs
+
 ) : ViewModel() {
 
     private val _authState = MutableStateFlow<AuthState>(AuthState.Idle)
@@ -29,7 +32,10 @@ class AuthViewModel(
             _authState.value = AuthState.Loading
             try {
                 val user = loginUserUseCase(email, password)
+                userPrefs.saveCurrentUserId(user.id) // сохраняем ID
+
                 _authState.value = AuthState.Success(user)
+
             } catch (e: Exception) {
                 _authState.value = AuthState.Error(e.message ?: "Login failed")
             }
@@ -41,6 +47,8 @@ class AuthViewModel(
             _authState.value = AuthState.Loading
             try {
                 val user = registerUserUseCase(email, username, password)
+                userPrefs.saveCurrentUserId(user.id) // сохраняем ID
+
                 _authState.value = AuthState.Success(user)
             } catch (e: Exception) {
                 _authState.value = AuthState.Error(e.message ?: "Registration failed")
