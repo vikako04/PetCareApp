@@ -14,7 +14,7 @@ fun PetCareApp() {
     val navController = rememberNavController()
 
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
-    val isLoggedIn = currentRoute in listOf("home", "calendar", "profile", "add_pet")
+    val isLoggedIn = currentRoute in listOf("home", "calendar", "profile", "add_pet", "pet_detail/{petId}")
 
     Scaffold(
         bottomBar = {

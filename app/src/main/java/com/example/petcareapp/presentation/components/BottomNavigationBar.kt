@@ -23,7 +23,7 @@ fun BottomNavigationBar(navController: NavHostController, isLoggedIn: Boolean) {
     val items = if (isLoggedIn) {
         listOf(
             NavigationItem("home", "Питомцы", Icons.Default.Pets),
-            NavigationItem("calendar", "Календарь", Icons.Default.DateRange),
+            NavigationItem("calendar", "Задачи", Icons.Default.DateRange),
             NavigationItem("profile", "Профиль", Icons.Default.Person),
 
         )

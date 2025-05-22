@@ -1,6 +1,7 @@
 package com.example.petcareapp.data.remote.api
 
 
+import androidx.room.Query
 import com.example.petcareapp.data.remote.model.AddPetRequest
 import com.example.petcareapp.data.remote.model.AuthResponse
 import com.example.petcareapp.data.remote.model.PetResponse
@@ -9,6 +10,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -39,4 +41,12 @@ interface ApiService {
 
     @DELETE("/api/tasks/{taskId}")
     suspend fun deleteTask(@Path("taskId") taskId: String)
+
+    @PATCH("/api/tasks/{id}/toggle")
+    suspend fun toggleTaskCompletion(
+        @Header("Authorization") token: String,
+        @Path("id") taskId: String
+    ): Task
+
+
 }

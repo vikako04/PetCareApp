@@ -15,10 +15,11 @@ import com.example.petcareapp.domain.usecase.AddPetUseCase
 import com.example.petcareapp.domain.usecase.CreateTaskUseCase
 import com.example.petcareapp.domain.usecase.DeleteTaskUseCase
 import com.example.petcareapp.domain.usecase.GetPetsUseCase
-import com.example.petcareapp.domain.usecase.GetTasksForPetUseCase
+import com.example.petcareapp.domain.usecase.GetTasksByPetUseCase
 import com.example.petcareapp.domain.usecase.GetUserByIdUseCase
 import com.example.petcareapp.domain.usecase.LoginUserUseCase
 import com.example.petcareapp.domain.usecase.RegisterUserUseCase
+import com.example.petcareapp.domain.usecase.ToggleTaskCompletedUseCase
 import com.example.petcareapp.presentation.viewmodel.AddPetViewModel
 import com.example.petcareapp.presentation.viewmodel.AuthViewModel
 import com.example.petcareapp.presentation.viewmodel.PetListViewModel
@@ -45,8 +46,10 @@ val appModule = module {
     factory { AddPetUseCase(get(), get()) }
     factory { GetPetsUseCase(get()) }
     factory { CreateTaskUseCase(get()) }
-    factory { GetTasksForPetUseCase(get()) }
+    factory { GetTasksByPetUseCase(get()) }
     factory { DeleteTaskUseCase(get()) }
+    factory { ToggleTaskCompletedUseCase(get()) }
+
 
     viewModel { PetListViewModel(get()) }
     viewModel { AuthViewModel(get(), get(), get()) }

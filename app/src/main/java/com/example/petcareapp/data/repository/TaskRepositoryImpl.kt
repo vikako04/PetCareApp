@@ -41,4 +41,10 @@ class TaskRepositoryImpl(
         // Удаляем локально
         taskDao.deleteTask(taskId)
     }
+    override suspend fun updateTaskCompletion(taskId: String, isCompleted: Boolean) {
+        taskDao.updateTaskCompletion(taskId, isCompleted)
+        val token = userPrefs.getAccessToken() ?: throw Exception("User not logged in")
+
+        api.toggleTaskCompletion("Bearer $token", taskId)
+    }
 }

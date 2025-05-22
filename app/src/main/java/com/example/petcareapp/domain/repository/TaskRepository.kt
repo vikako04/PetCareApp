@@ -7,4 +7,6 @@ interface TaskRepository {
     suspend fun createTask(task: Task): Task
     fun getTasksForPet(petId: String): Flow<List<Task>>
     suspend fun deleteTask(taskId: String)
+    suspend fun updateTaskCompletion(taskId: String, isCompleted: Boolean)
+
 }

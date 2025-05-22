@@ -4,9 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.petcareapp.domain.model.Pet
 import com.example.petcareapp.domain.usecase.GetPetsUseCase
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -24,4 +26,6 @@ class PetListViewModel(
             }
         }
     }
+    fun getPetById(petId: String): Flow<Pet?> = pets.map { it.find { pet -> pet.id == petId } }
+
 }

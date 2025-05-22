@@ -1,6 +1,7 @@
 package com.example.petcareapp.presentation.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -74,7 +75,7 @@ fun HomeScreen(
             }
 
             items(petList) { pet ->
-                PetCard(pet = pet)
+                PetCard(pet = pet, navController)
                 Spacer(modifier = Modifier.height(20.dp))
 
             }
@@ -83,9 +84,11 @@ fun HomeScreen(
 }
 
 @Composable
-fun PetCard(pet: Pet) {
+fun PetCard(pet: Pet, navController: NavHostController) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().clickable {
+            navController.navigate("pet_detail/${pet.id}")
+        },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFFFDFDFD)),
         elevation = CardDefaults.cardElevation(6.dp)

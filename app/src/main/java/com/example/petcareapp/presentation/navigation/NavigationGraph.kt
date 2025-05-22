@@ -8,6 +8,7 @@ import com.example.petcareapp.presentation.screens.AddPetScreen
 import com.example.petcareapp.presentation.screens.CalendarScreen
 import com.example.petcareapp.presentation.screens.HomeScreen
 import com.example.petcareapp.presentation.screens.LoginScreen
+import com.example.petcareapp.presentation.screens.PetDetailScreen
 import com.example.petcareapp.presentation.screens.ProfileScreen
 import com.example.petcareapp.presentation.screens.RegisterScreen
 import org.koin.androidx.compose.getViewModel
@@ -21,5 +22,9 @@ fun NavigationGraph(navController: NavHostController) {
         composable("calendar") { CalendarScreen(navController = navController) }
         composable("profile") { ProfileScreen(navController = navController) }
         composable("add_pet") { AddPetScreen(navController = navController) }
+        composable("pet_detail/{petId}") { backStackEntry ->
+            val petId = backStackEntry.arguments?.getString("petId") ?: return@composable
+            PetDetailScreen(navController = navController, petId = petId)
+        }
     }
 }

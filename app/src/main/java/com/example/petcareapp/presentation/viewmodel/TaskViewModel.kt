@@ -6,14 +6,15 @@ import com.example.petcareapp.data.local.UserPrefs
 import com.example.petcareapp.domain.model.Task
 import com.example.petcareapp.domain.usecase.CreateTaskUseCase
 import com.example.petcareapp.domain.usecase.DeleteTaskUseCase
-import com.example.petcareapp.domain.usecase.GetTasksForPetUseCase
+import com.example.petcareapp.domain.usecase.GetTasksByPetUseCase
+import com.example.petcareapp.domain.usecase.ToggleTaskCompletedUseCase
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class TaskViewModel(
     private val createTaskUseCase: CreateTaskUseCase,
-    private val getTasksForPetUseCase: GetTasksForPetUseCase,
-    private val deleteTaskUseCase: DeleteTaskUseCase,
+    private val getTasksForPetUseCase: GetTasksByPetUseCase,
+    private val toggleTaskCompletedUseCase: ToggleTaskCompletedUseCase,
     private  val userPrefs: UserPrefs
 
 ) : ViewModel() {
@@ -47,14 +48,18 @@ class TaskViewModel(
         }
     }
 
-    fun deleteTask(taskId: String, petId: String) {
+
+    fun toggleTaskCompleted(task: Task) {
+        val updated = task.copy(isCompleted = !task.isCompleted)
         viewModelScope.launch {
             try {
-                deleteTaskUseCase(taskId)
-                loadTasks(petId) // обновим список
+                toggleTaskCompletedUseCase(updated.id, updated.isCompleted)
+                loadTasks(updated.pet)
             } catch (e: Exception) {
                 _error.value = e.message
             }
         }
     }
+
+
 }
