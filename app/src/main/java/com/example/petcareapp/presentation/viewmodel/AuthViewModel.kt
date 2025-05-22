@@ -33,6 +33,7 @@ class AuthViewModel(
             try {
                 val user = loginUserUseCase(email, password)
                 userPrefs.saveCurrentUserId(user.id) // сохраняем ID
+                userPrefs.saveAccessToken(user.accessToken)
 
                 _authState.value = AuthState.Success(user)
 
@@ -48,6 +49,7 @@ class AuthViewModel(
             try {
                 val user = registerUserUseCase(email, username, password)
                 userPrefs.saveCurrentUserId(user.id) // сохраняем ID
+                userPrefs.saveAccessToken(user.accessToken)
 
                 _authState.value = AuthState.Success(user)
             } catch (e: Exception) {

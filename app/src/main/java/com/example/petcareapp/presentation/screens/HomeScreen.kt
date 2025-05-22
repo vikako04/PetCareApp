@@ -75,6 +75,8 @@ fun HomeScreen(
 
             items(petList) { pet ->
                 PetCard(pet = pet)
+                Spacer(modifier = Modifier.height(20.dp))
+
             }
         }
     }

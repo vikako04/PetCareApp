@@ -37,4 +37,17 @@ class UserRepositoryImpl(
     override suspend fun clearUser() {
         userDao.deleteAllUsers()
     }
+
+    override suspend fun getUserById(id: String): User? {
+        val entity = userDao.getUserById(id)
+        return entity?.let {
+            User(
+                id = it.id,
+                email = it.email,
+                username = it.username,
+                accessToken = it.accessToken
+            )
+        }
+    }
+
 }

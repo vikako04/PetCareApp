@@ -4,9 +4,13 @@ package com.example.petcareapp.data.remote.api
 import com.example.petcareapp.data.remote.model.AddPetRequest
 import com.example.petcareapp.data.remote.model.AuthResponse
 import com.example.petcareapp.data.remote.model.PetResponse
+import com.example.petcareapp.domain.model.Task
 import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 
 interface ApiService {
@@ -22,4 +26,17 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body pet: AddPetRequest
     ): PetResponse
+
+    @POST("/api/tasks/{petId}")
+    suspend fun createTask(
+        @Header("Authorization") token: String,
+        @Path("petId") petId: String,
+        @Body task: Task
+    ): Task
+
+    @GET("/api/tasks/{petId}")
+    suspend fun getTasks(@Path("petId") petId: String): List<Task>
+
+    @DELETE("/api/tasks/{taskId}")
+    suspend fun deleteTask(@Path("taskId") taskId: String)
 }

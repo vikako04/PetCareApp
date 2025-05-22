@@ -7,4 +7,6 @@ interface UserRepository {
     suspend fun saveUser(user: User)
     fun getUser(): Flow<User?>
     suspend fun clearUser()
+    suspend fun getUserById(id: String): User? // ← добавляем
+
 }
